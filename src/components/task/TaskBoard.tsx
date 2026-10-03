@@ -48,6 +48,12 @@ export function TaskBoard({ tasks }: { tasks: Task[] }) {
     };
   }, [tasks, uniqueCourses]);
 
+  // In Calendar view, all deadlines are visible (only filtered by course and search)
+  const calendarTasks = useMemo(
+    () => filterTasks(tasks, selectedCourse, searchQuery, "all"),
+    [tasks, selectedCourse, searchQuery]
+  );
+
   const filteredTasks = useMemo(
     () => filterTasks(tasks, selectedCourse, searchQuery, timeFilter),
     [tasks, selectedCourse, searchQuery, timeFilter]
@@ -232,7 +238,7 @@ export function TaskBoard({ tasks }: { tasks: Task[] }) {
 
       {/* Main View Area */}
       {viewMode === "calendar" && (
-        <CalendarView tasks={filteredTasks} onTaskClick={setSelectedTask} />
+        <CalendarView tasks={calendarTasks} onTaskClick={setSelectedTask} />
       )}
       {viewMode === "grid" && (
         <TaskList tasks={filteredTasks} onTaskClick={setSelectedTask} />

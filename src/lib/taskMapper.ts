@@ -26,7 +26,11 @@ export function mapNotionPageToTask(
     "Untitled";
 
   const deadlineStr = props.Deadline?.date?.start;
-  const deadline = deadlineStr ? new Date(deadlineStr) : null;
+  const deadline = deadlineStr
+    ? deadlineStr.length === 10
+      ? new Date(`${deadlineStr}T00:00:00`)
+      : new Date(deadlineStr)
+    : null;
 
   const priority =
     (props.Priority?.select?.name as TaskPriority) ?? "No Priority";
